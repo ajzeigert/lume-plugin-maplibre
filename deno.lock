@@ -362,6 +362,7 @@
     "https://cdn.jsdelivr.net/gh/lumeland/lume@3.2.1/deps/lightningcss.ts": "d6a76e471107bde4a3e2837a36de412928533a64781d6f93ffd005b56070f4de",
     "https://cdn.jsdelivr.net/gh/lumeland/lume@3.2.1/deps/path.ts": "a3d24ee31773ba6ef19b588612f376acef0ad5d3d761c4d9a315f79036cc87a4",
     "https://cdn.jsdelivr.net/gh/lumeland/lume@3.2.1/deps/semver.ts": "4089dbcbad21636cb3d743eb61b3727674c133fba17556f0738b799f1a5a9441",
-    "https://cdn.jsdelivr.net/gh/lumeland/lume@3.2.1/middlewares/not_found.ts": "0f92cd91239444247a1c3dce1bed4e978445687ca76f544a0ccd483a352f761a"
+    "https://cdn.jsdelivr.net/gh/lumeland/lume@3.2.1/middlewares/not_found.ts": "0f92cd91239444247a1c3dce1bed4e978445687ca76f544a0ccd483a352f761a",
+    "https://purge.jsdelivr.net/gh/ajzeigert/lume-plugin-maplibre@main/mod.ts": "13716ccd75cd11f6b6094297b52e46606ea144a77cc48a242e4a572fc24cc538"
   }
 }
