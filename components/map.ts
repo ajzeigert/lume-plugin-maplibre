@@ -1,8 +1,6 @@
 import { DOMParser } from "https://cdn.jsdelivr.net/gh/b-fuze/deno-dom@0.1.56/deno-dom-wasm.ts";
 import type { Feature, FeatureCollection } from "npm:geojson@0.5.0";
 
-// const MAPLIBRE_VERSION = "4.7.1";
-const MAPLIBRE_CSS = `https://cdn.jsdelivr.net/npm/maplibre-gl@latest/dist/maplibre-gl.css`;
 
 const INIT_SCRIPT = await fetch(
 	import.meta.resolve("../assets/map-init.js"),
@@ -104,7 +102,6 @@ export function generateMapHtml({
 	div.setAttribute("style", `height:${height}px;`);
 	elements.push(div.outerHTML);
 
-	elements.push(`<link rel="stylesheet" href="${MAPLIBRE_CSS}">`);
 	elements.push(`<style>${DS_RESET_CSS}</style>`);
 
 	elements.push(

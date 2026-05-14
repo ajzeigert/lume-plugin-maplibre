@@ -1,6 +1,7 @@
 // Injected into a <script type="module"> by components/map.ts.
 // CONFIG is provided as a module-scoped variable prepended by generateInitScript.
 
+var MAPLIBRE_CSS = "https://cdn.jsdelivr.net/npm/maplibre-gl@latest/dist/maplibre-gl.css";
 var MAPLIBRE_JS = "https://cdn.jsdelivr.net/npm/maplibre-gl@latest/+esm";
 
 function toStyle(url) {
@@ -224,6 +225,13 @@ MapControls.prototype.onRemove = function () {
 	this._container.parentNode.removeChild(this._container);
 	this._map = undefined;
 };
+if (!document.querySelector('link[href="' + MAPLIBRE_CSS + '"]')) {
+	var link = document.createElement("link");
+	link.rel = "stylesheet";
+	link.href = MAPLIBRE_CSS;
+	document.head.appendChild(link);
+}
+
 var { default: maplibregl } = await import(MAPLIBRE_JS);
 
 var mapOptions = {
