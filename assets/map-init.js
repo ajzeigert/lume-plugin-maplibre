@@ -187,7 +187,7 @@ MapControls.prototype.onAdd = function (map) {
 	this._map = map;
 	var self = this;
 	var el = document.createElement("div");
-	el.className = "maplibregl-ctrl maplibregl-ctrl-group d-flex flex-column";
+	el.className = "maplibregl-ctrl maplibregl-ctrl-group lume-map-controls";
 
 	var label = document.createElement("label");
 	var checkbox = document.createElement("input");

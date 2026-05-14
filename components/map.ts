@@ -35,18 +35,19 @@ export interface MapHtmlParams {
 	height?: number;
 }
 
-// CSS that resets ds.css rules (details, summary, button, select) bleeding into MapLibre controls.
+// Two @scope blocks: the container-wide one fixes AttributionControl's details/summary;
+// the .lume-map-controls one resets our custom widget only, leaving MapLibre's native
+// NavigationControl buttons untouched.
 const DS_RESET_CSS = `
 @scope (.maplibregl-control-container) {
-  details { all: revert; }
-  summary { all: revert; }
-  summary::before { display: none; content: none; }
+  summary::before { content: none; display: none; }
+}
+@scope (.lume-map-controls) {
+  :scope { display: flex; flex-direction: column; }
   button { all: revert; }
   select { all: revert; margin: 6px; padding: 2px 4px; font-size: 12px; cursor: pointer; }
   label { display: flex; align-items: center; gap: 4px; padding: 4px 6px; font-size: 12px; cursor: pointer; }
   input[type="checkbox"] { all: revert; }
-  .d-flex { display: flex }
-  .flex-column { flex-direction: column }
 }`;
 
 export function generateInitScript({
