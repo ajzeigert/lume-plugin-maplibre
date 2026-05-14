@@ -10,6 +10,8 @@ A [Lume](https://lume.land) plugin that renders interactive [MapLibre GL JS](htt
 - Optional layer switcher for multiple named basemap styles
 - Fallback image support for RSS feeds (see [cleanfeed](https://github.com/ajzeigert/zeigert.com/blob/main/src/utils/cleanfeed.js))
 - MapLibre GL JS loaded dynamically — no build step required
+- Scoped CSS reset included to prevent theme styles from bleeding into MapLibre controls
+- Overridable Lume component at `_components/maplibre/map.ts`
 
 ## Installation
 
@@ -73,9 +75,11 @@ site.use(maplibrePlugin({
   defaultStyle: "positron",
 
   // Named basemap styles. A layer switcher appears automatically when more than one is defined.
+  // Values can be MapLibre GL style JSON URLs or XYZ raster tile URLs (detected by {z} in the URL).
   styles: {
     positron: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
     dark: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+    satellite: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
   },
 
   // Set to false to disable the layer switcher globally
@@ -86,6 +90,9 @@ site.use(maplibrePlugin({
 
   // CSS class added to the fallback img element
   fallbackClass: "feedonly",
+
+  // Map height in pixels (default: 400)
+  height: 400,
 }));
 ```
 
@@ -104,6 +111,36 @@ The `mapClass` and `fallbackClass` options are designed to work with feed-stripp
 | `style` | `string` | Style key or full URL, overrides `defaultStyle`. |
 | `layerSwitcher` | `boolean` | Override layer switcher visibility for this post. |
 | `fallback` | `string` | Path to a fallback image for RSS/no-JS contexts. |
+| `height` | `number` | Map height in pixels. Overrides the plugin-level `height` option. |
+
+## Customization
+
+### CSS reset
+
+The plugin injects a scoped `<style>` block alongside each map that resets theme styles (from Lume's design system `ds.css`) that would otherwise bleed into MapLibre controls — specifically `summary`, `button`, and `select` rules applied inside `.maplibregl-ctrl`.
+
+### Overriding the map component
+
+The plugin registers a Lume component at `_components/maplibre/map.ts`. To customize the generated HTML — including the CSS reset — place your own file at that path in your site and it will take precedence:
+
+```
+your-site/
+  _components/
+    maplibre/
+      map.ts   ← your override
+```
+
+The component receives a `MapHtmlParams` object and must return an HTML string. Use the plugin's [`components/map.ts`](./components/map.ts) as a starting point.
+
+### Calling the component from a template
+
+If you prefer to place the map manually in a layout rather than having it auto-injected before page content, you can call the component from a Vento template. The preprocessor still runs and normalizes the frontmatter data — access it via the `map` key on the page:
+
+```vento
+{{ await comp.maplibre.map(map) }}
+```
+
+Note that `map.geojson` will be a resolved `FeatureCollection` object at this point (the preprocessor loads the file), not the original path string.
 
 ## GeoJSON styling
 

@@ -179,7 +179,21 @@ Deno.test("generateInitScript: includes fitBounds call for fitBounds camera", ()
   assertStringIncludes(script, "fitBounds");
 });
 
-Deno.test("generateInitScript: includes LayerSwitcher when showSwitcher true", () => {
+Deno.test("generateInitScript: includes overlay toggle checkbox", () => {
+  const script = generateInitScript({
+    containerId: "map-test",
+    geojson: sampleGeoJson,
+    styleUrl: "https://example.com/style.json",
+    camera: { type: "explicit", center: [0, 0], zoom: 5 },
+    showSwitcher: false,
+    styles: {},
+  });
+  assertStringIncludes(script, "MapControls");
+  assertStringIncludes(script, "Show overlays");
+  assertStringIncludes(script, 'type = "checkbox"');
+});
+
+Deno.test("generateInitScript: includes style select when showSwitcher true", () => {
   const script = generateInitScript({
     containerId: "map-test",
     geojson: sampleGeoJson,
@@ -191,7 +205,7 @@ Deno.test("generateInitScript: includes LayerSwitcher when showSwitcher true", (
       dark: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
     },
   });
-  assertStringIncludes(script, "LayerSwitcher");
+  assertStringIncludes(script, 'createElement("select")');
 });
 
 Deno.test("generateInitScript: includes SimpleStyle circle-color expression", () => {
@@ -259,10 +273,10 @@ Deno.test("generateMapHtml: includes fallbackClass on img when set", () => {
 Deno.test("generateMapHtml: includes MapLibre CDN URLs in init script", () => {
   const html = generateMapHtml(baseParams);
   assertStringIncludes(html, "maplibre-gl.css");
-  assertStringIncludes(html, "maplibre-gl.js");
+  assertStringIncludes(html, "maplibre-gl");
 });
 
-Deno.test("generateMapHtml: init script includes dynamic CDN loader", () => {
+Deno.test("generateMapHtml: init script uses dynamic import for MapLibre", () => {
   const html = generateMapHtml(baseParams);
-  assertStringIncludes(html, "ensureMapLibre");
+  assertStringIncludes(html, "await import(");
 });

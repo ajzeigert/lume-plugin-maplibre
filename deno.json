@@ -1,6 +1,6 @@
 {
   "imports": {
-    "lume/": "https://cdn.jsdelivr.net/gh/lumeland/lume@3.2.1/"
+    "lume/": "https://cdn.jsdelivr.net/gh/lumeland/lume@3.2.1/",
   },
   "tasks": {
     "test": "deno test --allow-read"
