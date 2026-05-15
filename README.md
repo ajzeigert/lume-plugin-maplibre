@@ -98,7 +98,11 @@ site.use(maplibrePlugin({
 
 ### RSS feed compatibility
 
-The `mapClass` and `fallbackClass` options are designed to work with feed-stripping utilities. For example, with [cleanfeed](https://github.com/ajzeigert/zeigert.com/blob/main/src/utils/cleanfeed.js), elements with `class="nofeed"` are removed from feed content and elements with `class="feedonly"` are kept. Configure the classes to match whatever convention your setup uses.
+The `mapClass` and `fallbackClass` options are designed to work with feed-stripping utilities that post-process your RSS/Atom output.
+
+The convention used on [zeigert.com](https://zeigert.com): elements with `class="nofeed"` are stripped from feed content, and elements with `class="feedonly"` are kept only in the feed. The interactive map gets `mapClass: "nofeed"` so it's excluded from feed readers, and the fallback image gets `fallbackClass: "feedonly"` so it appears in feeds but not on the page. The stripping itself is handled by [cleanfeed](https://github.com/ajzeigert/zeigert.com/blob/main/src/utils/cleanfeed.js), a small utility that filters page content before it's written into the feed template.
+
+Configure `mapClass` and `fallbackClass` to match whatever class names your own feed-stripping setup uses.
 
 ## Frontmatter reference
 
