@@ -1,4 +1,5 @@
 import { dirname, join } from "jsr:@std/path";
+import { merge } from "lume/core/utils/object.ts";
 import type Site from "lume/core/site.ts";
 import type { Feature, FeatureCollection } from "npm:geojson@0.5.0";
 import {
@@ -22,6 +23,11 @@ export interface Options {
   fallbackClass?: string;
   height?: number;
 }
+
+export const defaults: Options = {
+  defaultStyle: "positron",
+  styles: {},
+};
 
 interface MapFrontmatter {
   geojson?: string;
@@ -127,17 +133,9 @@ export async function resolveGeoJson(
   );
 }
 
-export default function maplibrePlugin(userOptions: Options = {}): (site: Site) => void {
-  const {
-    defaultStyle = "positron",
-    styles: userStyles = {},
-    layerSwitcher: globalLayerSwitcher,
-    mapClass,
-    fallbackClass,
-    height: globalHeight,
-  } = userOptions;
-
-  const allStyles: Record<string, string> = { positron: POSITRON_URL, ...userStyles };
+export default function maplibre(userOptions?: Options): (site: Site) => void {
+  const options = merge(defaults, userOptions);
+  const allStyles: Record<string, string> = { positron: POSITRON_URL, ...options.styles };
   const styleCount = Object.keys(allStyles).length;
 
   return (site: Site) => {
@@ -158,10 +156,10 @@ export default function maplibrePlugin(userOptions: Options = {}): (site: Site) 
         const pageDir = dirname(pagePath);
 
         const geojson = await resolveGeoJson(mapData, pageDir);
-        const styleUrl = resolveStyleUrl(mapData.style, allStyles, defaultStyle);
+        const styleUrl = resolveStyleUrl(mapData.style, allStyles, options.defaultStyle);
         const camera = resolveCameraConfig(mapData);
         const switcher = showLayerSwitcher(
-          globalLayerSwitcher,
+          options.layerSwitcher,
           mapData.layerSwitcher,
           styleCount,
         );
@@ -177,9 +175,9 @@ export default function maplibrePlugin(userOptions: Options = {}): (site: Site) 
           showSwitcher: switcher,
           styles: switcher ? allStyles : {},
           fallback: mapData.fallback ?? null,
-          mapClass,
-          fallbackClass,
-          height: mapData.height ?? globalHeight,
+          mapClass: options.mapClass,
+          fallbackClass: options.fallbackClass,
+          height: mapData.height ?? options.height,
         });
 
         page.data.content = html + (page.data.content ?? "");

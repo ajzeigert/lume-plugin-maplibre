@@ -18,9 +18,9 @@ A [Lume](https://lume.land) plugin that renders interactive [MapLibre GL JS](htt
 Add the plugin to your `_config.ts`:
 
 ```ts
-import maplibrePlugin from "https://cdn.jsdelivr.net/gh/ajzeigert/lume-plugin-maplibre@v0.1.0/mod.ts";
+import maplibre from "https://cdn.jsdelivr.net/gh/ajzeigert/lume-plugin-maplibre@v0.1.2/mod.ts";
 
-site.use(maplibrePlugin());
+site.use(maplibre());
 ```
 
 ## Usage
