@@ -1,7 +1,6 @@
 import { DOMParser } from "https://cdn.jsdelivr.net/gh/b-fuze/deno-dom@0.1.56/deno-dom-wasm.ts";
 import type { Feature, FeatureCollection } from "npm:geojson@0.5.0";
 
-
 const INIT_SCRIPT = await fetch(
 	import.meta.resolve("../assets/map-init.js"),
 ).then((r) => r.text());
@@ -41,6 +40,7 @@ export interface MapHtmlParams {
 const DS_RESET_CSS = `
 @scope (.maplibregl-control-container) {
   summary::before { content: none; display: none; }
+  summary { all: revert; }
 }
 @scope (.lume-map-controls) {
   :scope { display: flex; flex-direction: column; }
